@@ -19,6 +19,7 @@ export interface FormatConnection {
         upload: number
         download: number
     }
+    process: string
     completed: boolean
     original: Connection
 }

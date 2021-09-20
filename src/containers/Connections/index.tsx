@@ -5,6 +5,7 @@ import { Cell, Column, ColumnInstance, TableInstance, TableOptions, useBlockLayo
 import { useLatest, useScroll } from 'react-use'
 
 import { Header, Checkbox, Modal, Icon, Drawer, Card, Button } from '@components'
+import * as CountryEmoji from '@lib/countryEmoji'
 import { fromNow } from '@lib/date'
 import { formatTraffic } from '@lib/helper'
 import { useObject, useVisible } from '@lib/hook'
@@ -27,10 +28,11 @@ enum Columns {
     Upload = 'upload',
     Download = 'download',
     SourceIP = 'sourceIP',
+    Process = 'process',
     Time = 'time'
 }
 
-const shouldCenter = new Set<string>([Columns.Network, Columns.Type, Columns.Rule, Columns.Speed, Columns.Upload, Columns.Download, Columns.SourceIP, Columns.Time])
+const shouldCenter = new Set<string>([Columns.Network, Columns.Type, Columns.Rule, Columns.Speed, Columns.Upload, Columns.Download, Columns.SourceIP, Columns.Process, Columns.Time])
 
 interface TableColumn<D extends object = {}> extends
     ColumnInstance<D>,
@@ -89,7 +91,7 @@ export default function Connections () {
     const data: FormatConnection[] = useMemo(() => connections.map(
         c => ({
             id: c.id,
-            host: `${c.metadata.host || c.metadata.destinationIP}:${c.metadata.destinationPort}`,
+            host: `${CountryEmoji.getCountryFlagEmojiByISOCode(c.metadata.geoCountry)} ${c.metadata.host || c.metadata.destinationIP}:${c.metadata.destinationPort}`,
             chains: c.chains.slice().reverse().join(' / '),
             rule: c.rule === RuleType.RuleSet ? `${c.rule}(${c.rulePayload})` : c.rule,
             time: new Date(c.start).getTime(),
@@ -101,6 +103,7 @@ export default function Connections () {
             speed: { upload: c.uploadSpeed, download: c.downloadSpeed },
             completed: !!c.completed,
             original: c,
+            process: c.metadata.process ?? '-/-',
         }),
     ), [connections])
     const devices = useMemo(() => {
@@ -139,6 +142,7 @@ export default function Connections () {
         { Header: t(`columns.${Columns.Upload}`), accessor: Columns.Upload, minWidth: 100, width: 100, sortDescFirst: true },
         { Header: t(`columns.${Columns.Download}`), accessor: Columns.Download, minWidth: 100, width: 100, sortDescFirst: true },
         { Header: t(`columns.${Columns.SourceIP}`), accessor: Columns.SourceIP, minWidth: 140, width: 140, filter: 'equals' },
+        { Header: t(`columns.${Columns.Process}`), accessor: Columns.Process, minWidth: 140, width: 140 },
         { Header: t(`columns.${Columns.Time}`), accessor: Columns.Time, minWidth: 120, width: 120, sortType (rowA, rowB) { return rowB.original.time - rowA.original.time } },
     ] as Array<TableColumnOption<FormatConnection>>, [t])
 

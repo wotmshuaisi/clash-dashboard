@@ -77,6 +77,7 @@ export interface Snapshot {
 export interface Connections {
     id: string
     metadata: {
+        process: string
         network: string
         type: string
         host: string
@@ -84,6 +85,7 @@ export interface Connections {
         sourcePort: string
         destinationPort: string
         destinationIP?: string
+        geoCountry?: string
     }
     upload: number
     download: number

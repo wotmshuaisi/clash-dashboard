@@ -1,6 +1,7 @@
 import classnames from 'classnames'
 import React, { useMemo } from 'react'
 
+import * as CountryEmoji from '@lib/countryEmoji'
 import { formatTraffic } from '@lib/helper'
 import { BaseComponentProps } from '@models'
 import { useI18n } from '@stores'
@@ -35,7 +36,7 @@ export function ConnectionInfo (props: ConnectionsInfoProps) {
                 <span className="w-14 font-bold">{t('info.host')}</span>
                 <span className="font-mono flex-1 break-all">{
                     props.connection.metadata?.host
-                        ? `${props.connection.metadata.host}:${props.connection.metadata?.destinationPort}`
+                        ? `${props.connection.metadata.host}:${props.connection.metadata?.destinationPort} (${CountryEmoji.getCountryFlagEmojiByISOCode(props.connection.metadata?.geoCountry)})`
                         : t('info.hostEmpty')
                 }</span>
             </div>
@@ -43,7 +44,7 @@ export function ConnectionInfo (props: ConnectionsInfoProps) {
                 <span className="w-14 font-bold">{t('info.dstIP')}</span>
                 <span className="font-mono">{
                     props.connection.metadata?.destinationIP
-                        ? `${props.connection.metadata.destinationIP}:${props.connection.metadata?.destinationPort}`
+                        ? `${props.connection.metadata.destinationIP}:${props.connection.metadata?.destinationPort} (${CountryEmoji.getCountryFlagEmojiByISOCode(props.connection.metadata?.geoCountry)})`
                         : t('info.hostEmpty')
                 }</span>
             </div>
@@ -56,13 +57,13 @@ export function ConnectionInfo (props: ConnectionsInfoProps) {
             <div className="flex my-3">
                 <span className="w-14 font-bold">{t('info.rule')}</span>
                 <span className="font-mono">
-                    { props.connection.rule && `${props.connection.rule}${props.connection.rulePayload && `(${props.connection.rulePayload})`}` }
+                    {props.connection.rule && `${props.connection.rule}${props.connection.rulePayload && `(${props.connection.rulePayload})`}`}
                 </span>
             </div>
             <div className="flex my-3">
                 <span className="w-14 font-bold">{t('info.chains')}</span>
                 <span className="font-mono flex-1 break-all">
-                    { props.connection.chains?.slice().reverse().join(' / ') }
+                    {props.connection.chains?.slice().reverse().join(' / ')}
                 </span>
             </div>
             <div className="flex justify-between my-3">
@@ -74,6 +75,10 @@ export function ConnectionInfo (props: ConnectionsInfoProps) {
                     <span className="w-14 font-bold">{t('info.download')}</span>
                     <span className="font-mono">{formatTraffic(props.connection.download ?? 0)}</span>
                 </div>
+            </div>
+            <div className="flex my-3">
+                <span className="w-14 font-bold">{t('info.process')}</span>
+                <span className="font-mono">{props.connection.metadata?.process ?? '-/-'}</span>
             </div>
             <div className="flex my-3">
                 <span className="w-14 font-bold">{t('info.status')}</span>

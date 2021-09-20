@@ -74,6 +74,7 @@ const EN = {
             upload: 'Upload',
             download: 'Download',
             sourceIP: 'Source IP',
+            process: 'Process',
         },
         info: {
             title: 'Connection',
@@ -93,6 +94,7 @@ const EN = {
             opening: 'Open',
             closed: 'Closed',
             closeConnection: 'Close',
+            process: 'Process',
         },
     },
     Proxies: {

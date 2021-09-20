@@ -74,6 +74,7 @@ const CN = {
             upload: '上传',
             download: '下载',
             sourceIP: '来源 IP',
+            process: '进程',
         },
         info: {
             title: '连接信息',
@@ -93,6 +94,7 @@ const CN = {
             opening: '连接中',
             closed: '已关闭',
             closeConnection: '关闭连接',
+            process: '进程',
         },
     },
     Proxies: {
